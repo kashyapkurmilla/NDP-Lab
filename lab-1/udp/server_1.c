@@ -5,8 +5,9 @@
 #include <arpa/inet.h>
 #include <stdlib.h>
 #include <unistd.h>
-
+#include <ctype.h> 
 #define myport 9090
+#define maxsize 1024
 
 int main() {
     int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
@@ -30,9 +31,9 @@ int main() {
     printf("Binding Successful\n");
 
     int size = sizeof(struct sockaddr);
-    char buff[99];
+    char buff[maxsize];
     int len, a = 0, e = 0, i = 0, o = 0, u = 0;
-    char result[20];
+    char result[maxsize];
 
     while (1) {
         printf("Waiting for a string from the client...\n");
@@ -46,29 +47,32 @@ int main() {
         }
 
         len = strlen(buff);
-
-        // Calculate vowel counts
         a = e = i = o = u = 0;
         for (int k = 0; k < len; k++) {
-            switch (buff[k]) {
+            char c = tolower(buff[k]);
+            switch (c) {
                 case 'a':
-                case 'A': a++; break;
+                    a++;
+                    break;
                 case 'e':
-                case 'E': e++; break;
+                    e++;
+                    break;
                 case 'i':
-                case 'I': i++; break;
+                    i++;
+                    break;
                 case 'o':
-                case 'O': o++; break;
+                    o++;
+                    break;
                 case 'u':
-                case 'U': u++; break;
-                default: break;
+                    u++;
+                    break;
+                default:
+                    break;
             }
         }
-
-        // Check if the string is a palindrome
         int is_palindrome = 1;
         for (int k = 0; k < len / 2; k++) {
-            if (buff[k] != buff[len - k - 1]) {
+            if (tolower(buff[k]) != tolower(buff[len - k - 1])) {
                 is_palindrome = 0;
                 break;
             }
@@ -79,8 +83,6 @@ int main() {
         } else {
             strcpy(result, "Not a palindrome");
         }
-
-        // Send the result and other data back to the client
         sendto(sockfd, result, strlen(result), 0, (struct sockaddr *)&client_addr, size);
         sendto(sockfd, &len, sizeof(len), 0, (struct sockaddr *)&client_addr, size);
         sendto(sockfd, &a, sizeof(a), 0, (struct sockaddr *)&client_addr, size);
