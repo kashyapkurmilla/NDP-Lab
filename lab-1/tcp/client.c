@@ -6,7 +6,7 @@
 # include<netinet/in.h>
 #include<string.h>
 
-#define myport 9091
+#define myport 8080
 int main()
 {
 	int sockfd = socket(AF_INET,SOCK_STREAM,0);
