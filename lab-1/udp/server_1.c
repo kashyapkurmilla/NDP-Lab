@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <ctype.h> 
-#define myport 9090
+#define myport 8080
 #define maxsize 1024
 
 int main() {
