@@ -7,7 +7,7 @@
 #include<string.h>
 #include<sys/socket.h>
 
-#define myport 9091
+#define myport 8080
 int main()
 {
 	int sockfd =  socket(AF_INET,SOCK_STREAM,0);
